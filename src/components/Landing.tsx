@@ -163,31 +163,77 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
     if (user && isProcessing && forceNewAuth) { // Changed condition to forceNewAuth
       console.log('User authenticated through Civic Auth:', user);
       
-      // Determine OAuth provider from user data
+      // Determine OAuth provider from user data with better error handling
       let oauthProvider: 'google' | 'discord' | 'x' | 'civic' = 'civic';
       
-      // Better OAuth provider detection
-      if (user.email && user.email.includes('gmail.com')) {
-        oauthProvider = 'google';
-      } else if (user.email && user.email.includes('discord.com')) {
-        oauthProvider = 'discord';
-      } else if (user.email && user.email.includes('twitter.com')) {
-        oauthProvider = 'x';
-      } else if ((user as any).provider) {
-        // Check if Civic provides provider information
-        const provider = (user as any).provider.toLowerCase();
-        if (provider.includes('google')) oauthProvider = 'google';
-        else if (provider.includes('discord')) oauthProvider = 'discord';
-        else if (provider.includes('twitter') || provider.includes('x')) oauthProvider = 'x';
-      } else if ((user as any).iss) {
-        // Check issuer for OAuth provider
-        const issuer = (user as any).iss.toLowerCase();
-        if (issuer.includes('google')) oauthProvider = 'google';
-        else if (issuer.includes('discord')) oauthProvider = 'discord';
-        else if (issuer.includes('twitter') || issuer.includes('x')) oauthProvider = 'x';
+      try {
+        // Better OAuth provider detection with safe property access
+        if (user.email && typeof user.email === 'string') {
+          const email = user.email.toLowerCase();
+          if (email.includes('gmail.com')) {
+            oauthProvider = 'google';
+          } else if (email.includes('discord.com')) {
+            oauthProvider = 'discord';
+          } else if (email.includes('twitter.com')) {
+            oauthProvider = 'x';
+          }
+        }
+        
+        // Safe property access for additional provider detection
+        const userAny = user as any;
+        if (userAny.provider && typeof userAny.provider === 'string') {
+          const provider = userAny.provider.toLowerCase();
+          if (provider.includes('google')) oauthProvider = 'google';
+          else if (provider.includes('discord')) oauthProvider = 'discord';
+          else if (provider.includes('twitter') || provider.includes('x')) oauthProvider = 'x';
+        }
+        
+        if (userAny.iss && typeof userAny.iss === 'string') {
+          const issuer = userAny.iss.toLowerCase();
+          if (issuer.includes('google')) oauthProvider = 'google';
+          else if (issuer.includes('discord')) oauthProvider = 'discord';
+          else if (issuer.includes('twitter') || issuer.includes('x')) oauthProvider = 'x';
+        }
+        
+        // Additional checks for X/Twitter authentication
+        if (userAny.sub && typeof userAny.sub === 'string' && userAny.sub.includes('twitter')) {
+          oauthProvider = 'x';
+        }
+        
+        // Check for any Twitter-related fields
+        if (userAny.username && typeof userAny.username === 'string' && userAny.username.includes('twitter')) {
+          oauthProvider = 'x';
+        }
+        
+        // Manual override for X authentication if we detect any Twitter-like patterns
+        if (userAny.name && typeof userAny.name === 'string' && 
+            (userAny.name.includes('@') || userAny.name.startsWith('@'))) {
+          oauthProvider = 'x';
+        }
+        
+        // Check if the user object has any Twitter-specific properties
+        if (userAny.twitter_id || userAny.twitter_username || userAny.screen_name) {
+          oauthProvider = 'x';
+        }
+        
+        console.log('Detected OAuth provider:', oauthProvider);
+        console.log('User object keys:', Object.keys(user));
+        console.log('User object:', JSON.stringify(user, null, 2));
+        
+        // If we still can't determine the provider, try to infer from the authentication flow
+        if (oauthProvider === 'civic') {
+          // Check if this might be X authentication based on the user object structure
+          const hasTwitterLikeStructure = userAny.id && userAny.id.toString().length > 20;
+          if (hasTwitterLikeStructure) {
+            console.log('Inferring X authentication from user object structure');
+            oauthProvider = 'x';
+          }
+        }
+        
+      } catch (error) {
+        console.error('Error detecting OAuth provider:', error);
+        oauthProvider = 'civic'; // Fallback to civic
       }
-      
-      console.log('Detected OAuth provider:', oauthProvider);
       
       const userProfile = {
         id: user.id || `civic-${Date.now()}`,
@@ -215,23 +261,38 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
       };
       
       // Store user info with proper OAuth provider
-      localStorage.setItem('peerlink_oauth_provider', oauthProvider);
-      localStorage.setItem('peerlink_oauth_user', JSON.stringify(user));
-      localStorage.setItem('peerlink_user', JSON.stringify(userProfile));
+      try {
+        localStorage.setItem('peerlink_oauth_provider', oauthProvider);
+        localStorage.setItem('peerlink_oauth_user', JSON.stringify(user));
+        localStorage.setItem('peerlink_user', JSON.stringify(userProfile));
+      } catch (storageError) {
+        console.error('Error storing user data:', storageError);
+      }
       
       // Small delay to ensure OAuth flow is complete, then open dashboard
       setTimeout(() => {
         console.log('OAuth completed, opening dashboard with user:', userProfile);
-        onLogin(userProfile);
-        setIsProcessing(false);
-        setForceNewAuth(false); // Reset forceNewAuth after successful login
+        try {
+          onLogin(userProfile);
+          setIsProcessing(false);
+          setForceNewAuth(false); // Reset forceNewAuth after successful login
+        } catch (loginError) {
+          console.error('Error during login:', loginError);
+          // Force dashboard open even if onLogin fails
+          setIsProcessing(false);
+          setForceNewAuth(false);
+        }
       }, 1000);
       
       // Fallback: if dashboard doesn't open within 3 seconds, force it
       setTimeout(() => {
         if (isProcessing) {
           console.log('Fallback: forcing dashboard open after timeout');
-          onLogin(userProfile);
+          try {
+            onLogin(userProfile);
+          } catch (error) {
+            console.error('Fallback login failed:', error);
+          }
           setIsProcessing(false);
           setForceNewAuth(false);
         }
