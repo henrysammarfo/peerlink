@@ -251,7 +251,7 @@ function App() {
   return (
     <CivicAuthProvider 
       clientId={import.meta.env.VITE_CIVIC_APP_ID || "5b74fab7-e455-4130-b150-56062fe80139"}
-      redirectUrl={import.meta.env.VITE_CIVIC_REDIRECT_URI || "https://peerlink-do6jxlqwu-teamtitanlink.vercel.app/callback"}
+      redirectUrl={import.meta.env.VITE_CIVIC_REDIRECT_URI || "https://peerlink-blush.vercel.app/callback"}
       scopes={["openid", "profile", "email"]}
     >
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
