@@ -6,7 +6,9 @@ import { ProfileManagement } from './components/ProfileManagement';
 import { QRSharing } from './components/QRSharing';
 import { EventManagement } from './components/EventManagement';
 import { Messaging } from './components/Messaging';
+import { Web3Wallet } from './components/Web3Wallet';
 import { AuthProvider, useAuth } from './hooks/useAuth.tsx';
+import { Web3Provider } from './hooks/useWeb3';
 
 function AppContent() {
   const { user, isLoading, loginWithCivic, logout, updateProfile } = useAuth();
@@ -37,6 +39,8 @@ function AppContent() {
         return <EventManagement user={user} />;
       case 'messages':
         return <Messaging user={user} />;
+      case 'wallet':
+        return <Web3Wallet />;
       default:
         return <Dashboard user={user} onViewChange={setCurrentView} />;
     }
@@ -57,7 +61,9 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <Web3Provider>
+        <AppContent />
+      </Web3Provider>
     </AuthProvider>
   );
 }

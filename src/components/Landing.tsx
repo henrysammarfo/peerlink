@@ -2,9 +2,10 @@ import React from 'react';
 import { Shield, QrCode, Users, MessageCircle, Eye, Zap } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Card } from './ui/Card';
+import { CivicAuthLogin } from './CivicAuthLogin';
 
 interface LandingProps {
-  onLogin: () => void;
+  onLogin: (user: any) => void;
 }
 
 export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
@@ -41,6 +42,15 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
     },
   ];
 
+  const handleLogin = (user: any) => {
+    onLogin(user);
+  };
+
+  const handleError = (error: string) => {
+    console.error('Login error:', error);
+    // You could show a toast notification here
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-teal-50">
       {/* Hero Section */}
@@ -58,10 +68,12 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
               with verified identities and granular control over what you share.
             </p>
             
+            {/* Civic Auth Login Component */}
+            <div className="mb-8">
+              <CivicAuthLogin onLogin={handleLogin} onError={handleError} />
+            </div>
+            
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button size="lg" onClick={onLogin} className="text-lg px-8 py-4">
-                Login with Civic Auth
-              </Button>
               <Button variant="outline" size="lg" className="text-lg px-8 py-4">
                 Watch Demo
               </Button>
@@ -101,27 +113,6 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
               </Card>
             );
           })}
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 py-20">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Network Securely?
-          </h2>
-          <p className="text-xl text-purple-100 mb-8 leading-relaxed">
-            Join thousands of professionals who trust PeerLink for secure, 
-            privacy-first networking at events and online communities.
-          </p>
-          <Button
-            size="lg"
-            variant="secondary"
-            onClick={onLogin}
-            className="text-lg px-10 py-4 bg-white text-purple-600 hover:bg-gray-100"
-          >
-            Get Started with Civic Auth
-          </Button>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Users, QrCode, Calendar, MessageCircle, User, LogOut } from 'lucide-react';
+import { Link, Users, QrCode, Calendar, MessageCircle, User, LogOut, Wallet } from 'lucide-react';
 import { Button } from './ui/Button';
 
 interface NavigationProps {
@@ -19,6 +19,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     { id: 'qr', label: 'My QR', icon: QrCode },
     { id: 'events', label: 'Events', icon: Calendar },
     { id: 'messages', label: 'Messages', icon: MessageCircle },
+    { id: 'wallet', label: 'Wallet', icon: Wallet },
   ];
 
   return (
