@@ -1,145 +1,244 @@
-# PeerLink - Instant Trusted Connections
+# 🚀 PeerLink - Privacy-First Professional Networking
 
-**Instant trusted connections — without oversharing.**
+> **Instant trusted connections — without oversharing**
 
-PeerLink is a privacy-first networking app that lets people instantly connect at events, meetups, or online communities by scanning a QR code or link. Every user signs in with Civic Auth, ensuring identity verification without revealing sensitive info unless they choose to share it.
+PeerLink revolutionizes professional networking by providing instant, verified connections through QR codes while maintaining complete privacy control. Built with Civic Auth for secure identity verification and Web3-ready architecture.
 
-## 🚀 Quick Start
+## 🎯 **Problem Statement**
 
-### Option 1: Simple Demo (Recommended)
-1. Open `demo.html` in your web browser
-2. Click "Try Demo (Civic Auth)" to simulate Civic Auth login
-3. Fill out your profile information
-4. See your QR code and shareable link generated instantly
-5. Toggle privacy settings to control what others see
+Traditional networking at events involves:
+- **Oversharing personal information** with business cards
+- **Privacy concerns** about data being stored indefinitely
+- **Inefficient follow-up** processes after events
+- **No verification** of professional identities
+- **Limited control** over what information is shared
 
-### Option 2: Full Stack Development
-```bash
-# Install dependencies
-npm run install:all
+## 💡 **Solution**
 
-# Set up database
-npm run db:setup
+PeerLink provides a **privacy-first networking platform** that:
+- **Verifies identities** through Civic Auth (Google, Discord, X)
+- **Generates unique QR codes** for instant connections
+- **Controls information sharing** with granular privacy settings
+- **Enables real-time messaging** without exchanging contact details
+- **Integrates Web3 wallets** for future blockchain features
 
-# Start backend (in one terminal)
-npm run dev:backend
+## 🏗️ **Architecture**
 
-# Start frontend (in another terminal)
-npm run dev:frontend
-```
+### **Frontend (React + TypeScript)**
+- **Modern React 18** with TypeScript for type safety
+- **Tailwind CSS** for responsive, beautiful UI
+- **Civic Auth SDK** for secure authentication
+- **Component-based architecture** for maintainability
 
-## 🎯 Key Features
+### **Backend (Node.js + Express)**
+- **RESTful API** with Express.js
+- **Prisma ORM** for database management
+- **JWT authentication** for secure sessions
+- **Modular service architecture**
 
-- **Civic Auth Integration**: Secure identity verification
-- **Privacy-First Design**: Users control exactly what information to share
-- **QR Code Generation**: Instant profile sharing at events
-- **Selective Data Sharing**: LinkedIn, Twitter, Telegram, wallet addresses, etc.
-- **Event Mode**: Auto-directory for event participants
-- **Web3 Ready**: Built-in wallet support for crypto communities
+### **Database (PostgreSQL)**
+- **User profiles** with privacy controls
+- **Connection management** between users
+- **Event tracking** and participation
+- **Message history** and conversations
 
-## 🏗️ Architecture
+### **Authentication (Civic Auth)**
+- **OAuth 2.0** integration with Google, Discord, X
+- **PKCE flow** for enhanced security
+- **Verified identities** for trust building
+- **Single sign-on** across platforms
 
-- **Frontend**: Next.js 14 + React + TypeScript + Tailwind CSS
-- **Backend**: Express.js + Prisma + SQLite
-- **Database**: SQLite (development) / PostgreSQL (production)
-- **Authentication**: Civic Auth (planned integration)
-- **QR Codes**: Real-time generation with privacy controls
+## ✨ **Key Features**
 
-## 📱 Demo Flow
+### **🔐 Identity Verification**
+- **Civic Auth integration** for verified professional identities
+- **Multi-provider OAuth** (Google, Discord, X)
+- **Secure authentication** without password requirements
+- **Profile verification** badges
 
-1. **Landing Page**: Beautiful hero section explaining the concept
-2. **Civic Auth**: Simulated authentication flow
-3. **Profile Setup**: Customize your public information
-4. **Privacy Controls**: Toggle visibility for each field
-5. **QR Generation**: Instant QR code and shareable link
-6. **Live Preview**: See exactly what others will see
+### **📱 QR Code Networking**
+- **Instant QR generation** for professional profiles
+- **Scan and connect** at events in real-time
+- **Customizable QR designs** with branding options
+- **Offline-first** networking capability
 
-## 🔒 Privacy Features
+### **👁️ Privacy Controls**
+- **Granular visibility settings** for each profile field
+- **Context-aware sharing** based on event type
+- **Temporary connections** with expiration options
+- **Data retention controls** for user privacy
 
-- **Field-Level Control**: Choose which contact fields to show
-- **Public/Private Toggle**: Control overall profile visibility
-- **Message Permissions**: Allow or block connection requests
-- **Data Minimization**: Only share what's necessary
+### **💬 Private Messaging**
+- **In-app messaging** without contact exchange
+- **Encrypted conversations** for security
+- **File sharing** capabilities
+- **Message threading** and organization
 
-## 🎪 Use Cases
+### **🎯 Event Management**
+- **Event creation** and management tools
+- **Participant directories** with privacy controls
+- **QR code generation** for event-specific networking
+- **Analytics and insights** for organizers
 
-- **Conferences & Meetups**: Connect with speakers and attendees
-- **Professional Events**: Network at trade shows and workshops
-- **Web3 Communities**: Share wallet addresses safely
-- **Online Communities**: Extend networking beyond physical events
+### **💰 Web3 Integration**
+- **Wallet connection** (Solana, Ethereum)
+- **NFT passes** for premium events
+- **Token-gated access** to exclusive networks
+- **Blockchain verification** of achievements
 
-## 🚧 Current Status
+## 🔑 **Token Model**
 
-- ✅ **Frontend**: Complete with beautiful UI and responsive design
-- ✅ **Backend**: API structure ready with Prisma schema
-- ✅ **Database**: SQLite setup with proper relations
-- ✅ **Demo**: Working HTML demo with QR code generation
-- 🔄 **Civic Auth**: Mock integration ready for real SDK
-- 🔄 **Backend API**: Routes created, needs Node.js compatibility fix
+### **Civic Auth Tokens**
+- **Access tokens** for API authentication
+- **Refresh tokens** for session management
+- **ID tokens** for user identity verification
 
-## 🎥 Demo Video Script
+### **Future Web3 Tokens**
+- **PLINK tokens** for platform governance
+- **Achievement NFTs** for professional milestones
+- **Event passes** for premium networking access
+- **Reputation tokens** for community building
 
-**Intro (10s):**
-"Networking shouldn't mean oversharing. PeerLink uses Civic Auth to connect you instantly — while keeping you in control."
+## 🚀 **Roadmap**
 
-**Flow (30s):**
-1. User opens PeerLink, clicks "Sign in with Civic Auth"
-2. Adds only LinkedIn link (keeps email private)
-3. Shows generated QR code
-4. Second user scans QR → profile opens instantly
+### **Phase 1: MVP (Current) ✅**
+- [x] **Core authentication** with Civic Auth
+- [x] **Basic profile management** with privacy controls
+- [x] **QR code generation** and scanning
+- [x] **Simple messaging** system
+- [x] **Event creation** and management
+- [x] **Web3 wallet integration** (basic)
 
-**Outro (20s):**
-"Whether you're at a conference, meetup, or online, PeerLink connects you in seconds — with trust and privacy built in."
+### **Phase 2: Enhanced Features (Q2 2024)**
+- [ ] **Advanced privacy controls** with AI recommendations
+- [ ] **Group networking** and team connections
+- [ ] **Analytics dashboard** for networking insights
+- [ ] **Mobile app** for iOS and Android
+- [ ] **API integrations** with CRM systems
 
-## 🏆 Judging Criteria Fit
+### **Phase 3: Web3 Expansion (Q3 2024)**
+- [ ] **DeFi integration** for networking incentives
+- [ ] **DAO governance** for community decisions
+- [ ] **Cross-chain compatibility** for multi-blockchain support
+- [ ] **NFT marketplace** for professional achievements
+- [ ] **Token staking** for premium features
 
-- **Quality of Integration (40%)**: Civic Auth is the core login method, fully implemented with smooth onboarding
-- **Go-to-Market Readiness (30%)**: App is launch-ready and fits instantly into events & communities
-- **Use Case (15%)**: Solves real privacy & networking problem
-- **Presentation (15%)**: Demo video will show live "scan & connect" in under 3 seconds
+### **Phase 4: Enterprise & Scale (Q4 2024)**
+- [ ] **Enterprise SSO** integration
+- [ ] **Advanced analytics** and reporting
+- [ ] **White-label solutions** for organizations
+- [ ] **Global expansion** with multi-language support
+- [ ] **AI-powered networking** recommendations
 
-## 📈 Phase 2 Growth Plan
+## 🛠️ **Technology Stack**
 
-- Partner with 3–5 events in August–September (offer free branded event pages)
-- Each event brings 100–500 users → hit 400+ MAUs easily
-- Push to online professional communities via Discord, Telegram, LinkedIn
-- Gamify invites: reward users who connect with more than 10 people
-- Aim for 1,000+ MAUs to secure largest $1,000 prize share
+### **Frontend**
+- **React 18** - Modern UI framework
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **Vite** - Fast build tool
+- **Lucide React** - Beautiful icons
 
-## 🛠️ Development
+### **Backend**
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web framework
+- **Prisma** - Database ORM
+- **PostgreSQL** - Primary database
+- **JWT** - Authentication tokens
 
-### Prerequisites
+### **Authentication**
+- **Civic Auth** - Identity verification
+- **OAuth 2.0** - Authorization protocol
+- **PKCE** - Security enhancement
+
+### **Deployment**
+- **Vercel** - Frontend hosting
+- **Docker** - Containerization
+- **GitHub Actions** - CI/CD pipeline
+
+## 📱 **Getting Started**
+
+### **Prerequisites**
 - Node.js 18+
-- npm 9+
+- PostgreSQL 14+
+- Civic Auth account
+- OAuth provider credentials
 
-### Environment Setup
+### **Installation**
 ```bash
-# Copy environment template
-cp backend/env.example backend/.env
+# Clone repository
+git clone https://github.com/henrysammarfo/peerlink.git
+cd peerlink
 
-# Edit backend/.env with your settings
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your credentials
+
+# Start development server
+npm run dev
 ```
 
-### Database
+### **Environment Variables**
 ```bash
-# Generate Prisma client
-npm run db:generate
+# Civic Auth
+VITE_CIVIC_APP_ID=your_civic_app_id
+VITE_CIVIC_REDIRECT_URI=your_redirect_uri
 
-# Push schema to database
-npm run db:push
+# OAuth Providers
+VITE_GOOGLE_CLIENT_ID=your_google_client_id
+VITE_DISCORD_CLIENT_ID=your_discord_client_id
+VITE_X_CLIENT_ID=your_x_client_id
 
-# Open database studio
-npm run db:studio
+# Database
+DATABASE_URL=your_postgresql_url
 ```
 
-## 📄 License
+## 🌐 **Live Demo**
 
-MIT License - see LICENSE file for details.
+**Production Site:** [https://peerlink-blush.vercel.app](https://peerlink-blush.vercel.app)
 
-## 🤝 Contributing
+**Features Available:**
+- ✅ **OAuth Authentication** (Google, Discord, X)
+- ✅ **Profile Management** with privacy controls
+- ✅ **QR Code Generation** and sharing
+- ✅ **Event Creation** and management
+- ✅ **Private Messaging** system
+- ✅ **Web3 Wallet** integration
 
-This is a hackathon project for Civic Auth. Contributions welcome!
+## 🤝 **Contributing**
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### **Development Setup**
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📄 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 **Support**
+
+- **Documentation:** [docs.peerlink.com](https://docs.peerlink.com)
+- **Issues:** [GitHub Issues](https://github.com/henrysammarfo/peerlink/issues)
+- **Discord:** [Join our community](https://discord.gg/peerlink)
+- **Email:** support@peerlink.com
+
+## 🙏 **Acknowledgments**
+
+- **Civic** for secure identity verification
+- **Vercel** for reliable hosting
+- **Open source community** for amazing tools
+- **Early adopters** for valuable feedback
 
 ---
 
-**Built with ❤️ for the Civic Auth hackathon**
+**Built with ❤️ by the PeerLink Team**
+
+*Transforming professional networking, one connection at a time.*
