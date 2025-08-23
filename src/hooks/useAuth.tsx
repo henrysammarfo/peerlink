@@ -1,7 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { User } from '../types';
-import { CivicAuth } from '@civic/auth';
-import { getCivicConfig } from '../config/civic';
 
 interface AuthContextType {
   user: User | null;
@@ -14,60 +12,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Civic Auth configuration
-const civicAuth = new CivicAuth({
-  appId: getCivicConfig().appId,
-  redirectUri: getCivicConfig().redirectUri,
-  scope: getCivicConfig().scope
-});
-
-// Real Civic Auth integration
-export const loginWithCivic = async (): Promise<User> => {
-  try {
-    // Start Civic Auth flow
-    const result = await civicAuth.login();
-    
-    if (result.success && result.user) {
-      // Transform Civic user data to our User interface
-      const user: User = {
-        id: result.user.id || `user-${Date.now()}`,
-        civicId: result.user.id || `civic-${Date.now()}`,
-        name: result.user.name || 'Civic User',
-        title: result.user.title || '',
-        company: result.user.company || '',
-        email: result.user.email || '',
-        phone: result.user.phone || '',
-        linkedin: result.user.linkedin || '',
-        twitter: result.user.twitter || '',
-        walletAddress: result.user.walletAddress || '',
-        bio: result.user.bio || '',
-        avatar: result.user.picture || result.user.avatar || '',
-        isVerified: true, // Civic Auth users are verified
-        profileVisibility: {
-          email: false, // Default to private
-          phone: false,
-          linkedin: false,
-          twitter: false,
-          walletAddress: false,
-        },
-        createdAt: new Date(),
-      };
-      
-      // Store user in localStorage for persistence
-      localStorage.setItem('peerlink_user', JSON.stringify(user));
-      localStorage.setItem('civic_token', result.token || '');
-      
-      return user;
-    } else {
-      throw new Error('Civic Auth failed');
-    }
-  } catch (error) {
-    console.error('Civic Auth error:', error);
-    throw error;
-  }
-};
-
-// Mock fallback for development/testing
+// Mock Civic Auth integration for development
 export const mockCivicAuth = () => {
   return new Promise<User>((resolve) => {
     setTimeout(() => {
@@ -156,18 +101,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const loginWithCivicAuth = async () => {
     setIsLoading(true);
     try {
-      const userData = await loginWithCivic();
-      setUser(userData);
+      // For now, use mock auth since Civic Auth setup requires more configuration
+      // In production, you would integrate with the actual Civic Auth flow
+      const mockUser = await mockCivicAuth();
+      setUser(mockUser);
     } catch (error) {
       console.error('Civic Auth login failed:', error);
-      // Fallback to mock for development
-      try {
-        const mockUser = await mockCivicAuth();
-        setUser(mockUser);
-      } catch (mockError) {
-        console.error('Mock auth also failed:', mockError);
-        throw error;
-      }
+      throw error;
     } finally {
       setIsLoading(false);
     }
