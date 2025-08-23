@@ -163,18 +163,31 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
     if (user && isProcessing && forceNewAuth) { // Changed condition to forceNewAuth
       console.log('User authenticated through Civic Auth:', user);
       
-      // Mark OAuth as completed to prevent multiple triggers
-      // setOauthCompleted(true); // This line is removed
-      
       // Determine OAuth provider from user data
       let oauthProvider: 'google' | 'discord' | 'x' | 'civic' = 'civic';
+      
+      // Better OAuth provider detection
       if (user.email && user.email.includes('gmail.com')) {
         oauthProvider = 'google';
       } else if (user.email && user.email.includes('discord.com')) {
         oauthProvider = 'discord';
       } else if (user.email && user.email.includes('twitter.com')) {
         oauthProvider = 'x';
+      } else if ((user as any).provider) {
+        // Check if Civic provides provider information
+        const provider = (user as any).provider.toLowerCase();
+        if (provider.includes('google')) oauthProvider = 'google';
+        else if (provider.includes('discord')) oauthProvider = 'discord';
+        else if (provider.includes('twitter') || provider.includes('x')) oauthProvider = 'x';
+      } else if ((user as any).iss) {
+        // Check issuer for OAuth provider
+        const issuer = (user as any).iss.toLowerCase();
+        if (issuer.includes('google')) oauthProvider = 'google';
+        else if (issuer.includes('discord')) oauthProvider = 'discord';
+        else if (issuer.includes('twitter') || issuer.includes('x')) oauthProvider = 'x';
       }
+      
+      console.log('Detected OAuth provider:', oauthProvider);
       
       const userProfile = {
         id: user.id || `civic-${Date.now()}`,
@@ -204,18 +217,25 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
       // Store user info with proper OAuth provider
       localStorage.setItem('peerlink_oauth_provider', oauthProvider);
       localStorage.setItem('peerlink_oauth_user', JSON.stringify(user));
-      
-      // Mark that we should open dashboard now
-      // setShouldOpenDashboard(true); // This line is removed
+      localStorage.setItem('peerlink_user', JSON.stringify(userProfile));
       
       // Small delay to ensure OAuth flow is complete, then open dashboard
       setTimeout(() => {
         console.log('OAuth completed, opening dashboard with user:', userProfile);
         onLogin(userProfile);
         setIsProcessing(false);
-        // setAuthStarted(false); // This line is removed
         setForceNewAuth(false); // Reset forceNewAuth after successful login
       }, 1000);
+      
+      // Fallback: if dashboard doesn't open within 3 seconds, force it
+      setTimeout(() => {
+        if (isProcessing) {
+          console.log('Fallback: forcing dashboard open after timeout');
+          onLogin(userProfile);
+          setIsProcessing(false);
+          setForceNewAuth(false);
+        }
+      }, 3000);
     }
   }, [user, isProcessing, forceNewAuth, onLogin]);
 
