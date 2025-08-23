@@ -30,7 +30,7 @@ export const CivicAuthCallback: React.FC<CivicAuthCallbackProps> = ({ onLogin })
           bio: 'Verified through Civic Auth - secure, decentralized identity',
           avatar: user.picture || 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150',
           isVerified: true,
-          oauthProvider: 'civic',
+          oauthProvider: 'twitter',
           profileVisibility: {
             email: false,
             phone: false,
