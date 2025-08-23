@@ -25,7 +25,7 @@ interface User {
   bio: string;
   avatar: string;
   isVerified: boolean;
-  oauthProvider?: 'google' | 'discord' | 'x' | 'mock';
+  oauthProvider?: 'google' | 'discord' | 'twitter' | 'mock';
   profileVisibility: {
     email: boolean;
     phone: boolean;

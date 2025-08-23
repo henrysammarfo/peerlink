@@ -164,7 +164,7 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
       console.log('User authenticated through Civic Auth:', user);
       
       // Determine OAuth provider from user data with better error handling
-      let oauthProvider: 'google' | 'discord' | 'x' | 'civic' = 'civic';
+      let oauthProvider: 'google' | 'discord' | 'twitter' | 'civic' = 'civic';
       
       try {
         // Better OAuth provider detection with safe property access
@@ -175,7 +175,7 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
           } else if (email.includes('discord.com')) {
             oauthProvider = 'discord';
           } else if (email.includes('twitter.com')) {
-            oauthProvider = 'x';
+            oauthProvider = 'twitter';
           }
         }
         
@@ -185,35 +185,35 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
           const provider = userAny.provider.toLowerCase();
           if (provider.includes('google')) oauthProvider = 'google';
           else if (provider.includes('discord')) oauthProvider = 'discord';
-          else if (provider.includes('twitter') || provider.includes('x')) oauthProvider = 'x';
+          else if (provider.includes('twitter') || provider.includes('x')) oauthProvider = 'twitter';
         }
         
         if (userAny.iss && typeof userAny.iss === 'string') {
           const issuer = userAny.iss.toLowerCase();
           if (issuer.includes('google')) oauthProvider = 'google';
           else if (issuer.includes('discord')) oauthProvider = 'discord';
-          else if (issuer.includes('twitter') || issuer.includes('x')) oauthProvider = 'x';
+          else if (issuer.includes('twitter') || issuer.includes('x')) oauthProvider = 'twitter';
         }
         
         // Additional checks for X/Twitter authentication
         if (userAny.sub && typeof userAny.sub === 'string' && userAny.sub.includes('twitter')) {
-          oauthProvider = 'x';
+          oauthProvider = 'twitter';
         }
         
         // Check for any Twitter-related fields
         if (userAny.username && typeof userAny.username === 'string' && userAny.username.includes('twitter')) {
-          oauthProvider = 'x';
+          oauthProvider = 'twitter';
         }
         
         // Manual override for X authentication if we detect any Twitter-like patterns
         if (userAny.name && typeof userAny.name === 'string' && 
             (userAny.name.includes('@') || userAny.name.startsWith('@'))) {
-          oauthProvider = 'x';
+          oauthProvider = 'twitter';
         }
         
         // Check if the user object has any Twitter-specific properties
         if (userAny.twitter_id || userAny.twitter_username || userAny.screen_name) {
-          oauthProvider = 'x';
+          oauthProvider = 'twitter';
         }
         
         console.log('Detected OAuth provider:', oauthProvider);
@@ -225,8 +225,8 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
           // Check if this might be X authentication based on the user object structure
           const hasTwitterLikeStructure = userAny.id && userAny.id.toString().length > 20;
           if (hasTwitterLikeStructure) {
-            console.log('Inferring X authentication from user object structure');
-            oauthProvider = 'x';
+            console.log('Inferring Twitter authentication from user object structure');
+            oauthProvider = 'twitter';
           }
         }
         
@@ -329,11 +329,11 @@ export const Landing: React.FC<LandingProps> = ({ onLogin }) => {
     // Don't render anything that would trigger dashboard opening
   }
 
-  const getDefaultAvatar = (provider: 'google' | 'discord' | 'x' | 'civic') => {
+  const getDefaultAvatar = (provider: 'google' | 'discord' | 'twitter' | 'civic') => {
     switch (provider) {
       case 'discord':
         return 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150';
-      case 'x':
+      case 'twitter':
         return 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150';
       case 'google':
         return 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150';
