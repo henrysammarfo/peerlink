@@ -199,6 +199,7 @@ DATABASE_URL=your_postgresql_url
 ## 🌐 **Live Demo**
 
 **Production Site:** [https://peerlink-blush.vercel.app](https://peerlink-blush.vercel.app)
+**Demo Video:** [DEMO VIDEO]((https://youtu.be/c-3N21aBFVo))
 
 **Features Available:**
 - ✅ **OAuth Authentication** (Google, Discord, X)
